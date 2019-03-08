@@ -25,15 +25,50 @@ class App extends React.Component {
       id : Date.now(),
       completed : false
     }
-    this.setState({ 
-      todo : [...this.state.todo, newTodo]
+    this.setState(prevState => { 
+      return {task : prevState.task, todo: [...prevState.todo, newTodo] }
     });
-    console.log(this.state.todo);
+    // this.setState({
+    //   todo: [...this.state.todo, newTodo], task : ""
+    // });
   };
 
   inputHandler = event => {
     this.setState({ [event.target.name] : event.target.value  });
+    console.log(event.target.value, this.state.task);
   };
+
+  clickHandler = todoId => {
+    console.log("Fired", todoId);
+    this.setState(prevState => { 
+      return {
+        todo: prevState.todo.map( item => {
+          if (item.id === todoId) {
+            console.log(item);
+            return {
+              task: item.task,
+              id: item.id,
+              completed: !item.completed
+            }
+          }
+          else {
+            return item;
+          }
+          })
+        }
+      })
+  };
+
+  clearHandler = () => {
+    console.log("Fired");
+    this.setState(prevState => {
+      return {
+        todo: prevState.todo.filter( item => { 
+          return !item.completed
+         })
+    }
+    })
+  }
 
   // you will need a place to store your state in this component.
   // design `App` to be the parent component of your application.
@@ -41,8 +76,8 @@ class App extends React.Component {
   render() {
     return (
       <div className="todo-list">
-        <TodoList todo={this.state.todo}/>
-        <TodoForm formHandler={this.formHandler} inputHandler={this.inputHandler}/>
+        <TodoList todo={this.state.todo} clickHandler={this.clickHandler}/>
+        <TodoForm value={this.state.task} formHandler={this.formHandler} inputHandler={this.inputHandler} clearHandler={this.clearHandler}/>
       </div>
     );
   }
