@@ -1,0 +1,15 @@
+.todo-list {
+    display: flex;
+    justify-content: center;
+    align-content: center;
+}
+
+.todo {
+    color: white;
+    background-color: red;
+}
+
+.todo-completed {
+    color: white;
+    background-color: green;
+}
